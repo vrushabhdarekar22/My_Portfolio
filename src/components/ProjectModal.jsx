@@ -1,38 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Github, Layers, Cpu, Database, ShieldCheck, ArrowRight, Activity, Terminal } from 'lucide-react';
 import Badge from './ui/Badge';
 import Button from './ui/Button';
 
 export default function ProjectModal({ project, isOpen, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen || !project) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto bg-black/80 backdrop-blur-xl">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-black/85 backdrop-blur-xl overflow-hidden">
         
         {/* Backdrop click */}
         <motion.div
-          className="fixed inset-0"
+          className="fixed inset-0 bg-transparent"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         />
 
-        {/* Modal Window Container */}
+        {/* Modal Window Container: strict max-height with comfortable top & bottom buffer */}
         <motion.div
-          className="relative w-full max-w-4xl bg-bgCard border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 my-auto"
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="relative w-full max-w-4xl max-h-[82vh] bg-bgCard border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 flex flex-col my-auto"
+          initial={{ opacity: 0, scale: 0.96, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          exit={{ opacity: 0, scale: 0.96, y: 16 }}
+          transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+          onClick={(e) => e.stopPropagation()}
         >
-          {/* Header Bar */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/80">
+          {/* Header Bar - Fixed Top */}
+          <div className="shrink-0 flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/95 backdrop-blur-md z-10">
             <div className="flex items-center gap-2 font-mono text-xs text-sky-400">
               <Terminal className="w-4 h-4" />
-              <span>System Architecture & Engineering Overview</span>
+              <span>System Topology & Architectural Deep Dive</span>
             </div>
 
             <button
@@ -44,8 +62,8 @@ export default function ProjectModal({ project, isOpen, onClose }) {
             </button>
           </div>
 
-          {/* Body Content */}
-          <div className="p-6 sm:p-8 space-y-8 max-h-[80vh] overflow-y-auto">
+          {/* Body Content - Scrollable with internal padding */}
+          <div className="flex-1 p-6 sm:p-8 space-y-8 overflow-y-auto overscroll-contain">
             
             {/* Title & Tagline */}
             <div>
@@ -58,7 +76,7 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                 </span>
               </div>
               
-              <h3 className="text-3xl font-extrabold text-white mb-2">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
                 {project.title}
               </h3>
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
@@ -118,7 +136,7 @@ export default function ProjectModal({ project, isOpen, onClose }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {project.features.map((feature, idx) => (
                   <div 
-                    key={idx}
+                    key={idx} 
                     className="flex items-start gap-2.5 p-3 rounded-lg bg-slate-900/50 border border-slate-800/80 text-xs text-slate-200"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-sky-400 mt-1.5 shrink-0"></span>
@@ -144,9 +162,9 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
           </div>
 
-          {/* Footer Action Bar */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-800 bg-slate-900/80">
-            <div className="flex items-center gap-3">
+          {/* Footer Action Bar - Fixed Bottom */}
+          <div className="shrink-0 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 px-6 py-4 border-t border-slate-800 bg-slate-900/95 backdrop-blur-md z-10">
+            <div className="flex flex-wrap items-center gap-3">
               <Button
                 variant="primary"
                 size="sm"
@@ -168,7 +186,7 @@ export default function ProjectModal({ project, isOpen, onClose }) {
               </Button>
             </div>
 
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose} className="self-end sm:self-auto">
               Close Preview
             </Button>
           </div>

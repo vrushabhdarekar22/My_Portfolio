@@ -75,7 +75,7 @@ export default function Contact() {
         <div className="flex flex-col items-start mb-14">
           <div className="inline-flex items-center gap-2 text-xs font-mono uppercase text-sky-400 tracking-wider mb-2">
             <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-            <span>09. Get In Touch</span>
+            <span>07. Get In Touch</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
             Let's <span className="bg-gradient-to-r from-sky-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent">Build Something.</span>

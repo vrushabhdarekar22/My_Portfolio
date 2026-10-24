@@ -15,7 +15,7 @@ export default function ResumeSection() {
         <div className="flex flex-col items-start mb-12">
           <div className="inline-flex items-center gap-2 text-xs font-mono uppercase text-sky-400 tracking-wider mb-2">
             <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-            <span>08. Official Curriculum Vitae</span>
+            <span>06. Official Curriculum Vitae</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
             Software Engineer <span className="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">Resume</span>
